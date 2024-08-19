@@ -90,19 +90,23 @@ floorspace_urb = floorspace.pivot(index = "t", columns = "Region", values = "Urb
 
 # Restructuring for square meters (m2/cap)
 avg_m2_cap_urb = avg_m2_cap.loc[avg_m2_cap['Area'] == 'Urban'].drop('Area', 1).T  # Remove area column & Transpose
+#avg_m2_cap_urb = avg_m2_cap.loc[avg_m2_cap['Area'] == 'Urban'].drop('Area', axis=1).T  # Could be stuck here due to python version upper than 3.7. Use this line instead of the above one if you have python version upper than 3.7
 avg_m2_cap_urb.columns = list(map(int,avg_m2_cap_urb.iloc[0]))                      # name columns according to the row containing the region-labels
 avg_m2_cap_urb2 = avg_m2_cap_urb.drop(['Region'])                                 # Remove idle row 
 
 avg_m2_cap_rur = avg_m2_cap.loc[avg_m2_cap['Area'] == 'Rural'].drop('Area', 1).T  # Remove area column & Transpose
+#avg_m2_cap_rur = avg_m2_cap.loc[avg_m2_cap['Area'] == 'Rural'].drop('Area', axis=1).T  # Could be stuck here due to python version upper than 3.7. Use this line instead of the above one if you have python version upper than 3.7
 avg_m2_cap_rur.columns = list(map(int,avg_m2_cap_rur.iloc[0]))                      # name columns according to the row containing the region-labels
 avg_m2_cap_rur2 = avg_m2_cap_rur.drop(['Region'])                                 # Remove idle row 
 
 # Restructuring for the Housing types (% of population living in them)
 housing_type_urb = housing_type.loc[housing_type['Area'] == 'Urban'].drop('Area', 1).T  # Remove area column & Transpose
+# housing_type_urb = housing_type.loc[housing_type['Area'] == 'Urban'].drop('Area', axis=1).T  # Could be stuck here due to python version upper than 3.7. Use this line instead of the above one if you have python version upper than 3.7
 housing_type_urb.columns = list(map(int,housing_type_urb.iloc[0]))                      # name columns according to the row containing the region-labels
 housing_type_urb2 = housing_type_urb.drop(['Region'])                                 # Remove idle row 
 
 housing_type_rur = housing_type.loc[housing_type['Area'] == 'Rural'].drop('Area', 1).T  # Remove area column & Transpose
+# housing_type_rur = housing_type.loc[housing_type['Area'] == 'Rural'].drop('Area', axis=1).T  # Could be stuck here due to python version upper than 3.7. Use this line instead of the above one if you have python version upper than 3.7
 housing_type_rur.columns = list(map(int,housing_type_rur.iloc[0]))                      # name columns according to the row containing the region-labels
 housing_type_rur2 = housing_type_rur.drop(['Region'])                                 # Remove idle row 
 
@@ -260,7 +264,7 @@ for region in range(1,27):
         commercial_m2_cap_hotels_1721_1820[int(region)][time]  = max(0.0, commercial_m2_cap_hotels_1820_1970[region][1820] - (commercial_m2_cap_hotels_1820_1970[region][1820]/100)*(1820-time))
         commercial_m2_cap_govern_1721_1820[int(region)][time]  = max(0.0, commercial_m2_cap_govern_1820_1970[region][1820] - (commercial_m2_cap_govern_1820_1970[region][1820]/100)*(1820-time))
 
-# combine historic with IMAGE data here
+# combine historic with IMAGE data here # Could be stuck here due to python version upper than 3.7. Use this line instead of the above one if you have python version upper than 3.7
 rurpop_tail                     = rurpop_1820_1970.append(rurpop2, ignore_index = False)
 urbpop_tail                     = urbpop_1820_1970.append(urbpop, ignore_index = False)
 pop_tail                        = pop_1820_1970.append(pop2, ignore_index = False)
@@ -280,6 +284,27 @@ commercial_m2_cap_office_tail   = commercial_m2_cap_office_1721_1820.append(comm
 commercial_m2_cap_retail_tail   = commercial_m2_cap_retail_1721_1820.append(commercial_m2_cap_retail_1820_1970.append(commercial_m2_cap_retail, ignore_index = False), ignore_index = False)
 commercial_m2_cap_hotels_tail   = commercial_m2_cap_hotels_1721_1820.append(commercial_m2_cap_hotels_1820_1970.append(commercial_m2_cap_hotels, ignore_index = False), ignore_index = False)
 commercial_m2_cap_govern_tail   = commercial_m2_cap_govern_1721_1820.append(commercial_m2_cap_govern_1820_1970.append(commercial_m2_cap_govern, ignore_index = False), ignore_index = False)
+
+# Using pd.concat instead of append # Could be stuck here due to python version upper than 3.7. Use this line instead of the above one if you have python version upper than 3.7
+# rurpop_tail                     = pd.concat([rurpop_1820_1970, rurpop2], ignore_index=False)
+# urbpop_tail                     = pd.concat([urbpop_1820_1970, urbpop], ignore_index=False)
+# pop_tail                        = pd.concat([pop_1820_1970, pop2], ignore_index=False)
+# floorspace_urb_tail             = pd.concat([floorspace_urb_1820_1970, floorspace_urb], ignore_index=False)
+# floorspace_rur_tail             = pd.concat([floorspace_rur_1820_1970, floorspace_rur], ignore_index=False)
+# commercial_m2_cap_office_tail   = pd.concat([commercial_m2_cap_office_1820_1970, commercial_m2_cap_office], ignore_index=False)
+# commercial_m2_cap_retail_tail   = pd.concat([commercial_m2_cap_retail_1820_1970, commercial_m2_cap_retail], ignore_index=False)
+# commercial_m2_cap_hotels_tail   = pd.concat([commercial_m2_cap_hotels_1820_1970, commercial_m2_cap_hotels], ignore_index=False)
+# commercial_m2_cap_govern_tail   = pd.concat([commercial_m2_cap_govern_1820_1970, commercial_m2_cap_govern], ignore_index=False)
+
+# rurpop_tail                     = pd.concat([rurpop_1721_1820, rurpop_1820_1970, rurpop2], ignore_index=False)
+# urbpop_tail                     = pd.concat([urbpop_1721_1820, urbpop_1820_1970, urbpop], ignore_index=False)
+# pop_tail                        = pd.concat([pop_1721_1820, pop_1820_1970, pop2], ignore_index=False)
+# floorspace_urb_tail             = pd.concat([floorspace_urb_1721_1820, floorspace_urb_1820_1970, floorspace_urb], ignore_index=False)
+# floorspace_rur_tail             = pd.concat([floorspace_rur_1721_1820, floorspace_rur_1820_1970, floorspace_rur], ignore_index=False)
+# commercial_m2_cap_office_tail   = pd.concat([commercial_m2_cap_office_1721_1820, commercial_m2_cap_office_1820_1970, commercial_m2_cap_office], ignore_index=False)
+# commercial_m2_cap_retail_tail   = pd.concat([commercial_m2_cap_retail_1721_1820, commercial_m2_cap_retail_1820_1970, commercial_m2_cap_retail], ignore_index=False)
+# commercial_m2_cap_hotels_tail   = pd.concat([commercial_m2_cap_hotels_1721_1820, commercial_m2_cap_hotels_1820_1970, commercial_m2_cap_hotels], ignore_index=False)
+# commercial_m2_cap_govern_tail   = pd.concat([commercial_m2_cap_govern_1721_1820, commercial_m2_cap_govern_1820_1970, commercial_m2_cap_govern], ignore_index=False)
 
 #%% FLOOR AREA STOCK -----------------------------------------------------------
 
